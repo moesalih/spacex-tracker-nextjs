@@ -1,5 +1,8 @@
 {
 	"files.associations": {
 		"wrangler.json": "jsonc"
-	}
+	},
+	"editor.tabSize": 2,
+	"js/ts.format.semicolons": "remove",
+	"editor.detectIndentation": false
 }
