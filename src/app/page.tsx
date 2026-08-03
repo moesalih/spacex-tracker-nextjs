@@ -1,88 +1,145 @@
-import Image from "next/image";
+"use client"
+
+import { useQuery } from "@tanstack/react-query"
+import { useState } from "react"
+import type { LaunchesData } from "@/lib/spacex"
+import { getChartUrl } from "./chart"
+
+interface LaunchesResponse extends LaunchesData {
+  scrapedAt?: string
+}
+
+async function fetchLaunches(): Promise<LaunchesResponse> {
+  const res = await fetch("/api/launches")
+  if (!res.ok) {
+    const body = (await res.json().catch(() => null)) as {
+      error?: string
+    } | null
+    throw new Error(body?.error ?? "Failed to load launches")
+  }
+  return res.json()
+}
 
 export default function Home() {
-	return (
-		<div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-			<main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-				<Image
-					className="dark:invert"
-					src="/next.svg"
-					alt="Next.js logo"
-					width={180}
-					height={38}
-					priority
-				/>
-				<ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-					<li className="mb-2 tracking-[-.01em]">
-						Get started by editing{" "}
-						<code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-							src/app/page.tsx
-						</code>
-						.
-					</li>
-					<li className="tracking-[-.01em]">
-						Save and see your changes instantly.
-					</li>
-				</ol>
+  const [isPast, setIsPast] = useState(false)
 
-				<div className="flex gap-4 items-center flex-col sm:flex-row">
-					<a
-						className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-						href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						Read our docs
-					</a>
-				</div>
-			</main>
-			<footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-				<a
-					className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-					href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<Image
-						aria-hidden
-						src="/file.svg"
-						alt="File icon"
-						width={16}
-						height={16}
-					/>
-					Learn
-				</a>
-				<a
-					className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-					href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<Image
-						aria-hidden
-						src="/window.svg"
-						alt="Window icon"
-						width={16}
-						height={16}
-					/>
-					Examples
-				</a>
-				<a
-					className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-					href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<Image
-						aria-hidden
-						src="/globe.svg"
-						alt="Globe icon"
-						width={16}
-						height={16}
-					/>
-					Go to nextjs.org →
-				</a>
-			</footer>
-		</div>
-	);
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: ["launches"],
+    queryFn: fetchLaunches,
+  })
+
+  const launches = data
+    ? isPast
+      ? [...data.pastLaunches].reverse()
+      : data.launches
+    : null
+  const chartUrl = launches ? getChartUrl(launches, isPast) : null
+
+  return (
+    <div className="font-sans container mx-auto max-w-5xl p-5">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10">
+        <div className="text-3xl font-semibold mb-4 sm:mb-0">
+          SpaceX Launches 🚀
+        </div>
+        {data && (
+          <div className="flex flex-row gap-2">
+            <Button selected={!isPast} onClick={() => setIsPast(false)}>
+              Upcoming
+            </Button>
+            <Button selected={isPast} onClick={() => setIsPast(true)}>
+              Past
+            </Button>
+          </div>
+        )}
+      </div>
+
+      {isPending && <div className="opacity-60">Loading launches…</div>}
+
+      {isError && (
+        <div>
+          {error instanceof Error
+            ? error.message
+            : "No launches data available."}
+        </div>
+      )}
+
+      {launches && (
+        <div className="flex flex-col md:flex-row  items-start md:grid md:grid-cols-12 gap-4  mb-10">
+          <div className="col-span-9">
+            {chartUrl && (
+              <div className="max-w-xl mb-10">
+                <img
+                  src={chartUrl}
+                  className="max-w-full"
+                  alt="Launch chart"
+                />
+              </div>
+            )}
+
+            {launches.map((l, i) => (
+              <div key={i} className="mb-6">
+                <div className="font-semibold">{l.dateText}</div>
+                <div className="my-1">
+                  {l.payloadIcon} {l.payload} • {l.customer}
+                </div>
+                <div className="text-sm font-semibold opacity-60 my-1">
+                  {l.type} • {l.site} • {l.orbit}
+                </div>
+                <div className="text-sm opacity-60">{l.note}</div>
+              </div>
+            ))}
+          </div>
+          <div className="col-span-3 bg-neutral-900 rounded-md text-sm p-3">
+            <div className="text-uppercase text-xs opacity-50">Source</div>
+            <div className="mb-3">
+              <a
+                href="https://en.wikipedia.org/wiki/List_of_Falcon_9_and_Falcon_Heavy_launches#Future_launches"
+                target="_blank"
+              >
+                Wikipedia: List of Falcon 9 and Falcon Heavy launches
+              </a>
+            </div>
+
+            <div className="mb-3">
+              <a
+                href="https://moe-ical_subscribe.web.val.run?title=SpaceX Launches&url=https://spacex.page/calendar"
+                target="_blank"
+                className="mr-3"
+              >
+                Sync to calendar
+              </a>
+            </div>
+
+            <div className="text-uppercase text-xs opacity-50">Created by</div>
+            <div className="">
+              <a href="https://0xMoe.com" target="_blank" className="mr-3">
+                MOΞ
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+const Button = ({
+  selected,
+  className: extraClassName,
+  ...props
+}: {
+  selected: boolean
+  className?: string
+  onClick?: () => void
+  children: React.ReactNode
+}) => {
+  const className = `
+	flex flex-row justify-center items-center rounded-md px-3 py-1 text-sm font-medium cursor-pointer
+	${selected ? "bg-neutral-700 text-inherit" : "text-neutral-500"}
+	shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600  
+	opacity-95 hover:opacity-100 disabled:opacity-50
+	${extraClassName || ""}
+	`
+
+  return <button type="button" {...props} className={className} />
 }
