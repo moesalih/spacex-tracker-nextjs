@@ -1,8 +1,8 @@
 "use client"
 
 import { useQuery } from "@tanstack/react-query"
-import { useState } from "react"
-import type { LaunchesData } from "@/lib/spacex"
+import { useEffect, useMemo, useRef, useState } from "react"
+import type { Launch, LaunchesData } from "@/lib/spacex"
 import { getChartUrl } from "./chart"
 
 interface LaunchesResponse extends LaunchesData {
@@ -20,35 +20,116 @@ async function fetchLaunches(): Promise<LaunchesResponse> {
   return res.json()
 }
 
+function matchesSearch(launch: Launch, query: string): boolean {
+  const q = query.trim().toLowerCase()
+  if (!q) return true
+
+  const fields = [
+    launch.payload,
+    launch.customer,
+    launch.type,
+    launch.site,
+    launch.orbit,
+    launch.note,
+  ]
+
+  return fields.some((field) => field?.toLowerCase().includes(q))
+}
+
 export default function Home() {
   const [isPast, setIsPast] = useState(false)
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
+  const searchInputRef = useRef<HTMLInputElement>(null)
 
   const { data, isPending, isError, error } = useQuery({
     queryKey: ["launches"],
     queryFn: fetchLaunches,
   })
 
-  const launches = data
-    ? isPast
-      ? [...data.pastLaunches].reverse()
-      : data.launches
-    : null
-  const chartUrl = launches ? getChartUrl(launches, isPast) : null
+  useEffect(() => {
+    if (isSearchOpen) {
+      searchInputRef.current?.focus()
+    }
+  }, [isSearchOpen])
+
+  const isSearchActive = isSearchOpen && searchQuery.trim().length > 0
+
+  const launches = useMemo(() => {
+    if (!data) return null
+
+    if (isSearchActive) {
+      const combined = [
+        ...[...data.launches].reverse(),
+        ...[...data.pastLaunches].reverse(),
+      ]
+      return combined.filter((l) => matchesSearch(l, searchQuery))
+    }
+
+    return isPast ? [...data.pastLaunches].reverse() : data.launches
+  }, [data, isPast, isSearchActive, searchQuery])
+
+  const chartUrl = launches ? getChartUrl(launches) : null
+
+  function closeSearch() {
+    setIsSearchOpen(false)
+    setSearchQuery("")
+  }
 
   return (
     <div className="font-sans container mx-auto max-w-5xl p-5">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10">
-        <div className="text-3xl font-semibold mb-4 sm:mb-0">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
+        <div className="text-3xl font-semibold">
           SpaceX Launches 🚀
         </div>
         {data && (
-          <div className="flex flex-row gap-2">
-            <Button selected={!isPast} onClick={() => setIsPast(false)}>
+          <div className="flex flex-row flex-wrap items-center gap-2">
+            <Button
+              selected={!isPast && !isSearchActive}
+              onClick={() => {
+                setIsPast(false)
+                if (isSearchActive) closeSearch()
+              }}
+            >
               Upcoming
             </Button>
-            <Button selected={isPast} onClick={() => setIsPast(true)}>
+            <Button
+              selected={isPast && !isSearchActive}
+              onClick={() => {
+                setIsPast(true)
+                if (isSearchActive) closeSearch()
+              }}
+            >
               Past
             </Button>
+            <Button
+              selected={isSearchOpen}
+              onClick={() => {
+                if (isSearchOpen) {
+                  closeSearch()
+                } else {
+                  setIsSearchOpen(true)
+                }
+              }}
+              aria-label={isSearchOpen ? "Close search" : "Open search"}
+            >
+              <span
+                className="inline-flex h-[1.4em] w-[1.4em] items-center justify-center leading-none"
+                aria-hidden
+              >
+                {isSearchOpen ? "✕" : <span className="scale-[2]">⌕</span>}
+              </span>
+            </Button>
+            {isSearchOpen && (
+              <input
+                ref={searchInputRef}
+                type="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search…"
+                className="rounded-md bg-neutral-800 border border-neutral-700 px-3 py-1 text-sm text-inherit placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500 w-[8rem]"
+              />
+            )}
           </div>
         )}
       </div>
@@ -73,6 +154,14 @@ export default function Home() {
                   className="max-w-full"
                   alt="Launch chart"
                 />
+              </div>
+            )}
+
+            {isSearchActive && (
+              <div className="text-sm opacity-60 mb-4">
+                {launches.length === 0
+                  ? "No launches match your search."
+                  : `${launches.length} result${launches.length === 1 ? "" : "s"}`}
               </div>
             )}
 
@@ -132,6 +221,7 @@ const Button = ({
   className?: string
   onClick?: () => void
   children: React.ReactNode
+  "aria-label"?: string
 }) => {
   const className = `
 	flex flex-row justify-center items-center rounded-md px-3 py-1 text-sm font-medium cursor-pointer

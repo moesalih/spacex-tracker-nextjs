@@ -1,5 +1,35 @@
-export const getChartUrl = (launches, isPast) => {
-  let vehicles = [
+import type { Launch } from "@/lib/spacex"
+
+function getYearFromLaunch(launch: Launch): number | null {
+  if (launch.dateText) {
+    const match = launch.dateText.match(/\b(20\d{2}|19\d{2})\b/)
+    if (match) return Number(match[1])
+  }
+  if (launch.date) {
+    const d = launch.date instanceof Date ? launch.date : new Date(launch.date)
+    if (!Number.isNaN(d.getTime())) return d.getUTCFullYear()
+  }
+  return null
+}
+
+function getYearsFromLaunches(launches: Launch[]): number[] {
+  const found = new Set<number>()
+  for (const launch of launches) {
+    const year = getYearFromLaunch(launch)
+    if (year != null) found.add(year)
+  }
+  if (found.size === 0) return []
+
+  const sorted = [...found].sort((a, b) => a - b)
+  const years: number[] = []
+  for (let y = sorted[0]; y <= sorted[sorted.length - 1]; y++) {
+    years.push(y)
+  }
+  return years
+}
+
+export const getChartUrl = (launches: Launch[]): string | null => {
+  const vehicles = [
     'F9 B5',
     'Falcon Heavy',
     'F9 B4',
@@ -7,7 +37,7 @@ export const getChartUrl = (launches, isPast) => {
     'F9 v1.1',
     'F9 v1.0',
   ]
-  let colors = [
+  const colors = [
     'rgba(54, 162, 235, 1)',
     'rgba(255, 99, 132, 1)',
     'rgba(255, 206, 86, 1)',
@@ -17,19 +47,15 @@ export const getChartUrl = (launches, isPast) => {
     'rgba(100, 100, 100, 1)',
   ]
 
-  let getChartData = (yearLabels, launches) => {
-    let getYearFromDateText = (launchDateText) => {
-      for (let y of yearLabels) if (launchDateText.includes(y)) return y
-    }
-    let data = {
+  const getChartData = (yearLabels: number[], launches: Launch[]) => {
+    return {
       labels: yearLabels,
       datasets: vehicles.map((v, i) => {
-        const ll = launches.filter((launch) => launch.type.includes(v))
-        let years = ll.map((launch) => getYearFromDateText(launch.dateText))
-        // console.log(v, years)
+        const ll = launches.filter((launch) => launch.type?.includes(v))
+        const years = ll.map((launch) => getYearFromLaunch(launch))
 
-        let counts = years.reduce((map, val) => {
-          map[val] = (map[val] || 0) + 1
+        const counts = years.reduce<Record<number, number>>((map, val) => {
+          if (val != null) map[val] = (map[val] || 0) + 1
           return map
         }, {})
         return {
@@ -39,19 +65,11 @@ export const getChartUrl = (launches, isPast) => {
         }
       }),
     }
-    return data
   }
 
-  const currentYear = 2026
-  let pastYears = []
-  for (let index = 2010; index <= currentYear; index++) pastYears.push(index)
+  const years = getYearsFromLaunches(launches)
+  if (years.length === 0) return null
 
-  let futureYears = []
-  for (let index = currentYear; index <= currentYear + 4; index++) {
-    futureYears.push(index)
-  }
-
-  const years = isPast ? pastYears : futureYears
   const chartData = getChartData(years, launches)
 
   const chart = {
