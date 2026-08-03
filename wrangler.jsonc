@@ -5,7 +5,7 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "spacex-tracker-nextjs",
-	"main": ".open-next/worker.js",
+	"main": "worker.ts",
 	"compatibility_date": "2025-10-08",
 	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
 	"assets": {
@@ -15,5 +15,18 @@
 	"observability": {
 		"enabled": true
 	},
-	"upload_source_maps": true
+	"upload_source_maps": true,
+	"r2_buckets": [
+		{
+			"binding": "LAUNCHES_BUCKET",
+			"bucket_name": "spacex-tracker",
+			// Write/read the real Cloudflare R2 bucket during local `next dev`
+			// (default is a local Miniflare simulation under .wrangler/state)
+			"remote": true
+		}
+	],
+	"triggers": {
+		// Scrape Wikipedia launches hourly and persist to R2
+		"crons": ["0 * * * *"]
+	}
 }
