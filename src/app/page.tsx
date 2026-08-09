@@ -191,7 +191,7 @@ export default function Home() {
 
             <div className="mb-3">
               <a
-                href="https://moe-ical_subscribe.web.val.run?title=SpaceX Launches&url=https://spacex.page/calendar"
+                href="/calendar/sync"
                 target="_blank"
                 className="mr-3"
               >
