@@ -125,7 +125,7 @@ export default function Home() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search…"
-                className="rounded-md bg-neutral-800 border border-neutral-700 px-3 py-1 text-sm text-inherit placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500 w-[8rem]"
+                className="rounded-md bg-neutral-100 border border-neutral-200 px-3 py-1 text-sm text-inherit placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400 w-[8rem] dark:bg-neutral-800 dark:border-neutral-700 dark:focus:ring-neutral-500"
               />
             )}
           </div>
@@ -168,7 +168,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <div className="col-span-3 bg-neutral-900 rounded-md text-sm p-3">
+          <div className="col-span-3 bg-neutral-100 rounded-md text-sm p-3 dark:bg-neutral-900">
             <div className="text-uppercase text-xs opacity-50">Source</div>
             <div className="mb-3">
               <a
@@ -215,7 +215,7 @@ const Button = ({
 }) => {
   const className = `
 	flex flex-row justify-center items-center rounded-md px-3 py-1 text-sm font-medium cursor-pointer
-	${selected ? "bg-neutral-700 text-inherit" : "text-neutral-500"}
+	${selected ? "bg-neutral-200 text-inherit dark:bg-neutral-700" : "text-neutral-500"}
 	shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600  
 	opacity-95 hover:opacity-100 disabled:opacity-50
 	${extraClassName || ""}
