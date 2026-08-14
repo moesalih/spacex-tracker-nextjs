@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { useEffect, useMemo, useRef, useState } from "react"
 import type { Launch, LaunchesData } from "@/lib/spacex"
-import { getChartUrl } from "./chart"
+import { LaunchChart } from "./LaunchChart"
 
 interface LaunchesResponse extends LaunchesData {
   scrapedAt?: string
@@ -68,8 +68,6 @@ export default function Home() {
 
     return isPast ? [...data.pastLaunches].reverse() : data.launches
   }, [data, isPast, isSearchActive, searchQuery])
-
-  const chartUrl = launches ? getChartUrl(launches) : null
 
   function closeSearch() {
     setIsSearchOpen(false)
@@ -146,16 +144,8 @@ export default function Home() {
 
       {launches && (
         <div className="flex flex-col md:flex-row  items-start md:grid md:grid-cols-12 gap-4  mb-10">
-          <div className="col-span-9">
-            {chartUrl && (
-              <div className="max-w-xl mb-10">
-                <img
-                  src={chartUrl}
-                  className="max-w-full"
-                  alt="Launch chart"
-                />
-              </div>
-            )}
+          <div className="col-span-9 min-w-0 w-full">
+            <LaunchChart launches={launches} />
 
             {isSearchActive && (
               <div className="text-sm opacity-60 mb-4">
