@@ -127,6 +127,7 @@ function parseFutureRows(rows: CheerioSelection, $: CheerioAPI): Launch[] {
       launch.orbit = removeReferences(children.eq(4).text())
       launch.customer = removeReferences(children.eq(5).text())
     } else if (!children.first().attr('colspan') && children.length == 1) {
+      // parse additional vehicle types. usually for falcon heavy launches
       launch.type = (launch.type ?? '') + ', ' + removeReferences(children.eq(0).text())
     } else if (children.first().attr('colspan')) {
       launch.note = removeReferences(children.eq(0).text())
@@ -163,6 +164,7 @@ function parsePastRows(rows: CheerioSelection, $: CheerioAPI): Launch[] {
       launch.customer = removeReferences(children.eq(7).text())
       launch.outcome = removeReferences(children.eq(8).text())
     } else if (!children.first().attr('colspan') && children.length == 2) {
+      // parse additional vehicle types. usually for falcon heavy launches
       launch.type = (launch.type ?? '') + ', ' + removeReferences(children.eq(0).text())
     } else if (children.first().attr('colspan')) {
       launch.note = removeReferences(children.eq(0).text())

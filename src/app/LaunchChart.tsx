@@ -102,6 +102,7 @@ export function LaunchChart({ launches }: { launches: Launch[] }) {
           <Tooltip
             cursor={{ fill: "rgba(255, 255, 255, 0.04)" }}
             content={LaunchTooltip}
+            isAnimationActive={false}
           />
           <Legend
             position={'top'}
