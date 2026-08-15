@@ -2,13 +2,36 @@ import { storeLaunches } from "@/lib/launches-store"
 import { getLaunches } from "@/lib/spacex"
 import { NextResponse } from "next/server"
 
+function isDebug(request: Request): boolean {
+  const value = new URL(request.url).searchParams.get("debug")
+  if (value === null) return false
+  return value === "" || value === "true" || value === "1"
+}
+
 /**
  * Scrape launch data from Wikipedia and persist the snapshot to R2.
  * Invoked by the Worker cron trigger (hourly) and available for manual runs.
+ *
+ * Pass `?debug=true` to skip the R2 write and return the full scrape payload.
  */
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const debug = isDebug(request)
     const data = await getLaunches()
+
+    if (debug) {
+      return NextResponse.json({
+        ok: true,
+        debug: true,
+        scrapedAt: new Date().toISOString(),
+        counts: {
+          pastLaunches: data.pastLaunches.length,
+          launches: data.launches.length,
+        },
+        data,
+      })
+    }
+
     const stored = await storeLaunches(data)
 
     return NextResponse.json({
@@ -26,6 +49,6 @@ export async function GET() {
   }
 }
 
-export async function POST() {
-  return GET()
+export async function POST(request: Request) {
+  return GET(request)
 }
