@@ -103,42 +103,31 @@ function getRows(
 }
 
 function parseFutureRows(rows: CheerioSelection, $: CheerioAPI): Launch[] {
-  const launches: Launch[] = []
-  let launch: Launch = {}
-  rows.each((_i, el) => {
-    const row = $(el)
-    row.find('br').replaceWith(' ')
-    const children = row.children()
-    // console.log(children.length)
-    if (children.first().attr('rowspan')) {
-      launch = {}
-      launch.dateText = removeReferences(children.eq(0).text())
-      launch.dateText = launch.dateText.replace(/(\d\d:\d\d)/, ' $1')
-      if (launch.dateText.match(/(\d\d:\d\d)/)) {
-        launch.date = new Date(launch.dateText.replace('~', '@') + ' UTC')
-      }
-      if (launch.date == null || Number.isNaN(launch.date.getTime())) {
-        launch.date = null
-      }
-      launch.type = removeReferences(children.eq(1).text()).replace('♺', '♻️')
-      launch.site = removeReferences(children.eq(2).text())
-      launch.payload = removeReferences(children.eq(3).text())
-      launch.payloadIcon = getPayloadIcon(launch.payload)
-      launch.orbit = removeReferences(children.eq(4).text())
-      launch.customer = removeReferences(children.eq(5).text())
-    } else if (!children.first().attr('colspan') && children.length == 1) {
-      // parse additional vehicle types. usually for falcon heavy launches
-      launch.type = (launch.type ?? '') + ', ' + removeReferences(children.eq(0).text())
-    } else if (children.first().attr('colspan')) {
-      launch.note = removeReferences(children.eq(0).text())
-      launch.payloadIcon = launch.payloadIcon || getPayloadIcon(launch.note)
-      launches.push(launch)
-    }
-  })
-  return launches
+  const columns = ['dateText', 'type', 'site', 'payload', 'orbit', 'customer']
+  return parseRows(rows, $, columns, 1)
 }
 
 function parsePastRows(rows: CheerioSelection, $: CheerioAPI): Launch[] {
+  const columns = [
+    'flightNum',
+    'dateText',
+    'type',
+    'site',
+    'payload',
+    'payloadMass',
+    'orbit',
+    'customer',
+    'outcome',
+  ]
+  return parseRows(rows, $, columns, 2)
+}
+
+function parseRows(
+  rows: CheerioSelection,
+  $: CheerioAPI,
+  columns: string[],
+  additionalTypeChildrenLength: number,
+): Launch[] {
   const launches: Launch[] = []
   let launch: Launch = {}
   rows.each((_i, el) => {
@@ -148,7 +137,7 @@ function parsePastRows(rows: CheerioSelection, $: CheerioAPI): Launch[] {
     // console.log(children.length)
     if (children.first().attr('rowspan')) {
       launch = {}
-      launch.dateText = removeReferences(children.eq(1).text())
+      launch.dateText = removeReferences(children.eq(columns.indexOf('dateText')).text())
       launch.dateText = launch.dateText.replace(/(\d\d:\d\d)/, ' $1')
       if (launch.dateText.match(/(\d\d:\d\d)/)) {
         launch.date = new Date(launch.dateText.replace('~', '@') + ' UTC')
@@ -156,14 +145,17 @@ function parsePastRows(rows: CheerioSelection, $: CheerioAPI): Launch[] {
       if (launch.date == null || Number.isNaN(launch.date.getTime())) {
         launch.date = null
       }
-      launch.type = removeReferences(children.eq(2).text()).replace('♺', '♻️')
-      launch.site = removeReferences(children.eq(3).text())
-      launch.payload = removeReferences(children.eq(4).text())
+      launch.type = removeReferences(children.eq(columns.indexOf('type')).text()).replace('♺', '♻️')
+      launch.site = removeReferences(children.eq(columns.indexOf('site')).text())
+      launch.payload = removeReferences(children.eq(columns.indexOf('payload')).text())
       launch.payloadIcon = getPayloadIcon(launch.payload)
-      launch.orbit = removeReferences(children.eq(6).text())
-      launch.customer = removeReferences(children.eq(7).text())
-      launch.outcome = removeReferences(children.eq(8).text())
-    } else if (!children.first().attr('colspan') && children.length == 2) {
+      launch.orbit = removeReferences(children.eq(columns.indexOf('orbit')).text())
+      launch.customer = removeReferences(children.eq(columns.indexOf('customer')).text())
+      const outcomeIndex = columns.indexOf('outcome')
+      if (outcomeIndex >= 0) {
+        launch.outcome = removeReferences(children.eq(outcomeIndex).text())
+      }
+    } else if (!children.first().attr('colspan') && children.length == additionalTypeChildrenLength) {
       // parse additional vehicle types. usually for falcon heavy launches
       launch.type = (launch.type ?? '') + ', ' + removeReferences(children.eq(0).text())
     } else if (children.first().attr('colspan')) {
