@@ -1,11 +1,11 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
 import {
   Bar,
   BarChart,
   CartesianGrid,
   Legend,
+  ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
@@ -20,26 +20,6 @@ import {
 
 const gridLineColor = "rgba(130, 130, 130, 0.3)"
 const tickStyle = { fill: "#888", fontSize: 12 }
-const CHART_HEIGHT = 300
-
-function useElementWidth<T extends HTMLElement>() {
-  const ref = useRef<T>(null)
-  const [width, setWidth] = useState(0)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-
-    const update = () => setWidth(el.clientWidth)
-    update()
-
-    const observer = new ResizeObserver(update)
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
-
-  return { ref, width }
-}
 
 function LaunchTooltip({ active, label, payload }: TooltipContentProps) {
   if (!active || !payload?.length) return null
@@ -70,16 +50,13 @@ function LaunchTooltip({ active, label, payload }: TooltipContentProps) {
 export function LaunchChart({ launches }: { launches: Launch[] }) {
   const data = getLaunchChartData(launches)
   const vehicles = getActiveVehicles(data)
-  const { ref, width } = useElementWidth<HTMLDivElement>()
 
   if (data.length === 0 || vehicles.length === 0) return null
 
   return (
-    <div ref={ref} className="mb-10 h-72 w-full min-w-0 max-w-xl overflow-hidden">
-      {width > 0 && (
+    <div className="mb-10 aspect-video w-full min-w-0">
+      <ResponsiveContainer width="100%" height="100%">
         <BarChart
-          width={width}
-          height={CHART_HEIGHT}
           data={data}
           margin={{ top: 8, right: 8, left: 4, bottom: 0 }}
           barCategoryGap={data.length <= 6 ? "18%" : "12%"}
@@ -121,7 +98,7 @@ export function LaunchChart({ launches }: { launches: Launch[] }) {
             />
           ))}
         </BarChart>
-      )}
+      </ResponsiveContainer>
     </div>
   )
 }
