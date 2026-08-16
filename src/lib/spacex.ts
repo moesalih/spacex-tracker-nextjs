@@ -180,6 +180,13 @@ function parseRows(
         launch.date = null
       }
       launch.type = removeReferences(children.eq(columns.indexOf('type')).text()).replace('♺', '♻️')
+      const shipTypeIndex = columns.indexOf('shipType')
+      if (shipTypeIndex >= 0) {
+        const shipType = removeReferences(children.eq(shipTypeIndex).text())
+        if (shipType) {
+          launch.type = (launch.type ?? '') + ', Ship ' + shipType
+        }
+      }
       launch.site = removeReferences(children.eq(columns.indexOf('site')).text())
       launch.payload = removeReferences(children.eq(columns.indexOf('payload')).text())
       launch.payloadIcon = getPayloadIcon(launch.payload)
