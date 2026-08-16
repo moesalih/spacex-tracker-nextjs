@@ -1,7 +1,11 @@
 "use client"
 
 import { useQuery } from "@tanstack/react-query"
+import { Search, X } from "lucide-react"
 import { useEffect, useMemo, useRef, useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import type { Launch, LaunchesData } from "@/lib/spacex"
 import { LaunchChart } from "./LaunchChart"
 
@@ -82,26 +86,26 @@ export default function Home() {
         </div>
         {data && (
           <div className="flex flex-row flex-wrap items-center gap-2">
-            <Button
-              selected={!isPast && !isSearchActive}
-              onClick={() => {
-                setIsPast(false)
-                if (isSearchActive) closeSearch()
+            <ToggleGroup
+              value={isSearchActive ? [] : [isPast ? "past" : "upcoming"]}
+              onValueChange={(value) => {
+                if (value.includes("past")) {
+                  setIsPast(true)
+                  if (isSearchActive) closeSearch()
+                } else if (value.includes("upcoming")) {
+                  setIsPast(false)
+                  if (isSearchActive) closeSearch()
+                }
               }}
+              variant="outline"
+              spacing={0}
             >
-              Upcoming
-            </Button>
+              <ToggleGroupItem value="upcoming">Upcoming</ToggleGroupItem>
+              <ToggleGroupItem value="past">Past</ToggleGroupItem>
+            </ToggleGroup>
             <Button
-              selected={isPast && !isSearchActive}
-              onClick={() => {
-                setIsPast(true)
-                if (isSearchActive) closeSearch()
-              }}
-            >
-              Past
-            </Button>
-            <Button
-              selected={isSearchOpen}
+              variant={isSearchOpen ? "secondary" : "outline"}
+              size="icon"
               onClick={() => {
                 if (isSearchOpen) {
                   closeSearch()
@@ -111,21 +115,16 @@ export default function Home() {
               }}
               aria-label={isSearchOpen ? "Close search" : "Open search"}
             >
-              <span
-                className="inline-flex h-[1.4em] w-[1.4em] items-center justify-center leading-none"
-                aria-hidden
-              >
-                {isSearchOpen ? "✕" : <span className="scale-[2]">⌕</span>}
-              </span>
+              {isSearchOpen ? <X /> : <Search />}
             </Button>
             {isSearchOpen && (
-              <input
+              <Input
                 ref={searchInputRef}
                 type="search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search…"
-                className="rounded-md bg-neutral-100 border border-neutral-200 px-3 py-1 text-sm text-inherit placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-400 w-[8rem] dark:bg-neutral-800 dark:border-neutral-700 dark:focus:ring-neutral-500"
+                className="w-[8rem]"
               />
             )}
           </div>
@@ -200,26 +199,4 @@ export default function Home() {
       )}
     </div>
   )
-}
-
-const Button = ({
-  selected,
-  className: extraClassName,
-  ...props
-}: {
-  selected: boolean
-  className?: string
-  onClick?: () => void
-  children: React.ReactNode
-  "aria-label"?: string
-}) => {
-  const className = `
-	flex flex-row justify-center items-center rounded-md px-3 py-1 text-sm font-medium cursor-pointer
-	${selected ? "bg-neutral-200 text-inherit dark:bg-neutral-700" : "text-neutral-500"}
-	shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600  
-	opacity-95 hover:opacity-100 disabled:opacity-50
-	${extraClassName || ""}
-	`
-
-  return <button type="button" {...props} className={className} />
 }
