@@ -7,6 +7,10 @@ export const VEHICLES = [
   "F9 FT",
   "F9 v1.1",
   "F9 v1.0",
+  "Block 1",
+  "Block 2",
+  "Block 3",
+  "Unknown",
 ] as const
 
 export type Vehicle = (typeof VEHICLES)[number]
@@ -18,6 +22,10 @@ export const VEHICLE_COLORS: Record<Vehicle, string> = {
   "F9 FT": "rgb(75, 192, 192)",
   "F9 v1.1": "rgb(153, 102, 255)",
   "F9 v1.0": "rgb(255, 159, 64)",
+  "Block 1": "rgb(255, 99, 132)",
+  "Block 2": "rgb(255, 206, 86)",
+  "Block 3": "rgb(54, 162, 235)",
+  Unknown: "rgb(128, 128, 128, 0.5)",
 }
 
 export type LaunchChartRow = { year: number } & Record<Vehicle, number>
@@ -54,14 +62,9 @@ export function getLaunchChartData(launches: Launch[]): LaunchChartRow[] {
   const years = getYearsFromLaunches(launches)
   if (years.length === 0) return []
 
-  const countsByVehicle: Record<Vehicle, Record<number, number>> = {
-    "F9 B5": {},
-    "Falcon Heavy": {},
-    "F9 B4": {},
-    "F9 FT": {},
-    "F9 v1.1": {},
-    "F9 v1.0": {},
-  }
+  const countsByVehicle = Object.fromEntries(
+    VEHICLES.map((vehicle) => [vehicle, {} as Record<number, number>]),
+  ) as Record<Vehicle, Record<number, number>>
 
   for (const launch of launches) {
     const year = getYearFromLaunch(launch)

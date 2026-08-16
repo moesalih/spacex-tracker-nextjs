@@ -40,7 +40,10 @@ function matchesSearch(launch: Launch, query: string): boolean {
   return fields.some((field) => field?.toLowerCase().includes(q))
 }
 
+type VehicleFamily = "falcon" | "starship"
+
 export default function Home() {
+  const [family, setFamily] = useState<VehicleFamily>("falcon")
   const [isPast, setIsPast] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
@@ -62,16 +65,25 @@ export default function Home() {
   const launches = useMemo(() => {
     if (!data) return null
 
+    const upcoming =
+      family === "starship"
+        ? (data.futureStarshipLaunches ?? [])
+        : data.launches
+    const past =
+      family === "starship"
+        ? (data.pastStarshipLaunches ?? [])
+        : data.pastLaunches
+
     if (isSearchActive) {
       const combined = [
-        ...[...data.launches].reverse(),
-        ...[...data.pastLaunches].reverse(),
+        ...[...upcoming].reverse(),
+        ...[...past].reverse(),
       ]
       return combined.filter((l) => matchesSearch(l, searchQuery))
     }
 
-    return isPast ? [...data.pastLaunches].reverse() : data.launches
-  }, [data, isPast, isSearchActive, searchQuery])
+    return isPast ? [...past].reverse() : upcoming
+  }, [data, family, isPast, isSearchActive, searchQuery])
 
   function closeSearch() {
     setIsSearchOpen(false)
@@ -85,6 +97,21 @@ export default function Home() {
       </div>
       {data && (
         <div className="flex flex-row flex-wrap items-center gap-2 mb-6">
+          <ToggleGroup
+            value={[family]}
+            onValueChange={(value) => {
+              if (value.includes("starship")) {
+                setFamily("starship")
+              } else if (value.includes("falcon")) {
+                setFamily("falcon")
+              }
+            }}
+            variant="outline"
+            spacing={0}
+          >
+            <ToggleGroupItem value="falcon">Falcon</ToggleGroupItem>
+            <ToggleGroupItem value="starship">Starship</ToggleGroupItem>
+          </ToggleGroup>
           <ToggleGroup
             value={isSearchActive ? [] : [isPast ? "past" : "upcoming"]}
             onValueChange={(value) => {
@@ -173,6 +200,14 @@ export default function Home() {
                 target="_blank"
               >
                 Wikipedia: List of Falcon 9 and Falcon Heavy launches
+              </a>
+            </div>
+            <div className="mb-3">
+              <a
+                href="https://en.wikipedia.org/wiki/List_of_Starship_launches#Future_launches"
+                target="_blank"
+              >
+                Wikipedia: List of Starship launches
               </a>
             </div>
 
