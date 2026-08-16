@@ -80,56 +80,54 @@ export default function Home() {
 
   return (
     <div className="font-sans container mx-auto max-w-5xl p-5">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
-        <div className="text-3xl font-semibold">
-          SpaceX Launches 🚀
-        </div>
-        {data && (
-          <div className="flex flex-row flex-wrap items-center gap-2">
-            <ToggleGroup
-              value={isSearchActive ? [] : [isPast ? "past" : "upcoming"]}
-              onValueChange={(value) => {
-                if (value.includes("past")) {
-                  setIsPast(true)
-                  if (isSearchActive) closeSearch()
-                } else if (value.includes("upcoming")) {
-                  setIsPast(false)
-                  if (isSearchActive) closeSearch()
-                }
-              }}
-              variant="outline"
-              spacing={0}
-            >
-              <ToggleGroupItem value="upcoming">Upcoming</ToggleGroupItem>
-              <ToggleGroupItem value="past">Past</ToggleGroupItem>
-            </ToggleGroup>
-            <Button
-              variant={isSearchOpen ? "secondary" : "outline"}
-              size="icon"
-              onClick={() => {
-                if (isSearchOpen) {
-                  closeSearch()
-                } else {
-                  setIsSearchOpen(true)
-                }
-              }}
-              aria-label={isSearchOpen ? "Close search" : "Open search"}
-            >
-              {isSearchOpen ? <X /> : <Search />}
-            </Button>
-            {isSearchOpen && (
-              <Input
-                ref={searchInputRef}
-                type="search"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search…"
-                className="w-[8rem]"
-              />
-            )}
-          </div>
-        )}
+      <div className="text-3xl font-semibold mb-8">
+        SpaceX Launches 🚀
       </div>
+      {data && (
+        <div className="flex flex-row flex-wrap items-center gap-2 mb-6">
+          <ToggleGroup
+            value={isSearchActive ? [] : [isPast ? "past" : "upcoming"]}
+            onValueChange={(value) => {
+              if (value.includes("past")) {
+                setIsPast(true)
+                if (isSearchActive) closeSearch()
+              } else if (value.includes("upcoming")) {
+                setIsPast(false)
+                if (isSearchActive) closeSearch()
+              }
+            }}
+            variant="outline"
+            spacing={0}
+          >
+            <ToggleGroupItem value="upcoming">Upcoming</ToggleGroupItem>
+            <ToggleGroupItem value="past">Past</ToggleGroupItem>
+          </ToggleGroup>
+          <Button
+            variant={isSearchOpen ? "secondary" : "outline"}
+            size="icon"
+            onClick={() => {
+              if (isSearchOpen) {
+                closeSearch()
+              } else {
+                setIsSearchOpen(true)
+              }
+            }}
+            aria-label={isSearchOpen ? "Close search" : "Open search"}
+          >
+            {isSearchOpen ? <X /> : <Search />}
+          </Button>
+          {isSearchOpen && (
+            <Input
+              ref={searchInputRef}
+              type="search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search…"
+              className="w-[8rem]"
+            />
+          )}
+        </div>
+      )}
 
       {isPending && <div className="opacity-60">Loading launches…</div>}
 
