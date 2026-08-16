@@ -27,6 +27,8 @@ export async function GET(request: Request) {
         counts: {
           pastLaunches: data.pastLaunches.length,
           launches: data.launches.length,
+          pastStarshipLaunches: data.pastStarshipLaunches.length,
+          futureStarshipLaunches: data.futureStarshipLaunches.length,
         },
         data,
       })
@@ -40,6 +42,8 @@ export async function GET(request: Request) {
       counts: {
         pastLaunches: stored.pastLaunches.length,
         launches: stored.launches.length,
+        pastStarshipLaunches: stored.pastStarshipLaunches.length,
+        futureStarshipLaunches: stored.futureStarshipLaunches.length,
       },
     })
   } catch (error) {

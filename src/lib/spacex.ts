@@ -21,6 +21,8 @@ export interface Launch {
 export interface LaunchesData {
   pastLaunches: Launch[]
   launches: Launch[]
+  pastStarshipLaunches: Launch[]
+  futureStarshipLaunches: Launch[]
 }
 
 /** Historical launches through 2024, cached from Wikipedia scrape. */
@@ -32,7 +34,7 @@ function loadPastLaunches2024(): Launch[] {
 }
 
 export async function getLaunches(): Promise<LaunchesData> {
-  const [current] = await Promise.all([
+  const [currentFalcon, currentStarship] = await Promise.all([
     // loadPage(
     //   'https://en.wikipedia.org/wiki/List_of_Falcon_9_and_Falcon_Heavy_launches_(2010%E2%80%932019)',
     // ),
@@ -48,6 +50,9 @@ export async function getLaunches(): Promise<LaunchesData> {
     loadPage(
       'https://en.wikipedia.org/wiki/List_of_Falcon_9_and_Falcon_Heavy_launches',
     ),
+    loadPage(
+      'https://en.wikipedia.org/wiki/List_of_Starship_launches',
+    ),
   ])
 
   const data: LaunchesData = {
@@ -57,11 +62,19 @@ export async function getLaunches(): Promise<LaunchesData> {
       // ...getRows(y20to22, '#Launches', 'table.collapsible', parsePastRows),
       // ...getRows(y23, '#Launches', 'table.collapsible', parsePastRows),
       // ...getRows(y24, '#Launches', 'table.collapsible', parsePastRows),
-      ...getRows(current, '#Past_launches', 'table.collapsible', parsePastRows),
+      ...getRows(currentFalcon, '#Past_launches', 'table.collapsible', parsePastRows),
     ],
     launches: [
-      ...getRows(current, '#Future_launches', 'table', parseFutureRows),
+      ...getRows(currentFalcon, '#Future_launches', 'table', parseFutureRows),
     ],
+
+    pastStarshipLaunches: [
+      ...getRows(currentStarship, '#Past_launches', 'table.plainrowheaders', parsePastStarshipRows),
+    ],
+    futureStarshipLaunches: [
+      ...getRows(currentStarship, '#Future_launches', 'table', parseFutureStarshipRows),
+    ],
+
   }
 
   return data
@@ -112,6 +125,27 @@ function parsePastRows(rows: CheerioSelection, $: CheerioAPI): Launch[] {
     'flightNum',
     'dateText',
     'type',
+    'site',
+    'payload',
+    'payloadMass',
+    'orbit',
+    'customer',
+    'outcome',
+  ]
+  return parseRows(rows, $, columns, 2)
+}
+
+function parseFutureStarshipRows(rows: CheerioSelection, $: CheerioAPI): Launch[] {
+  const columns = ['dateText', 'type', 'shipType', 'site', 'payload', 'orbit', 'customer']
+  return parseRows(rows, $, columns, 2)
+}
+
+function parsePastStarshipRows(rows: CheerioSelection, $: CheerioAPI): Launch[] {
+  const columns = [
+    'flightNum',
+    'dateText',
+    'type',
+    'shipType',
     'site',
     'payload',
     'payloadMass',
@@ -185,5 +219,6 @@ function removeReferences(string: string): string {
   return string
     .replace(/\[\d+\]/g, '')
     .replace(/\n$/g, '')
+    .replace(/\n/g, ' ')
     .replace(/\u00A0/g, ' ')
 }
