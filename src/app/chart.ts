@@ -69,7 +69,7 @@ export function getLaunchChartData(launches: Launch[]): LaunchChartRow[] {
   for (const launch of launches) {
     const year = getYearFromLaunch(launch)
     if (year == null) continue
-    const vehicle = VEHICLES.find((v) => launch.type?.includes(v))
+    const vehicle = getVehicleFromType(launch.type)
     if (!vehicle) continue
     countsByVehicle[vehicle][year] = (countsByVehicle[vehicle][year] || 0) + 1
   }
@@ -85,4 +85,90 @@ export function getLaunchChartData(launches: Launch[]): LaunchChartRow[] {
 
 export function getActiveVehicles(data: LaunchChartRow[]): Vehicle[] {
   return VEHICLES.filter((vehicle) => data.some((row) => row[vehicle] > 0))
+}
+
+export function getBoosterNumbersFromType(type: string | undefined): number[] {
+  if (!type) return []
+
+  const numbers: number[] = []
+  const seen = new Set<number>()
+  for (const match of type.matchAll(/B(\d{4})/gi)) {
+    const booster = Number(match[1])
+    if (seen.has(booster)) continue
+    seen.add(booster)
+    numbers.push(booster)
+  }
+  return numbers
+}
+
+function getDateFromLaunch(launch: Launch): Date | null {
+  if (!launch.date) return null
+  const d = launch.date instanceof Date ? launch.date : new Date(launch.date)
+  if (Number.isNaN(d.getTime())) return null
+  return d
+}
+
+export function getVehicleFromType(type: string | undefined): Vehicle | null {
+  if (!type) return null
+  const vehicle = VEHICLES.find((v) => v !== "Unknown" && type.includes(v))
+  if (vehicle) return vehicle
+  // Wikipedia sometimes shortens Falcon Heavy to "FH B5 B1055..."
+  if (/\bFH\b/.test(type)) return "Falcon Heavy"
+  return null
+}
+
+export type BoosterScatterPoint = {
+  x: number
+  y: number
+  dateText?: string
+  mission?: string
+  type?: string
+  vehicle: Vehicle
+}
+
+export function getBoosterScatterPoints(
+  launches: Launch[],
+): BoosterScatterPoint[] {
+  const points: BoosterScatterPoint[] = []
+
+  for (const launch of launches) {
+    const date = getDateFromLaunch(launch)
+    if (!date) continue
+
+    const boosters = getBoosterNumbersFromType(launch.type)
+    if (boosters.length === 0) continue
+
+    const vehicle = getVehicleFromType(launch.type) ?? "Unknown"
+    for (const booster of boosters) {
+      points.push({
+        x: date.getTime(),
+        y: booster,
+        dateText: launch.dateText,
+        mission: launch.payload,
+        type: launch.type,
+        vehicle,
+      })
+    }
+  }
+
+  return points
+}
+
+export function getBoosterScatterByVehicle(launches: Launch[]): {
+  vehicles: Vehicle[]
+  pointsByVehicle: Partial<Record<Vehicle, BoosterScatterPoint[]>>
+} {
+  const pointsByVehicle: Partial<Record<Vehicle, BoosterScatterPoint[]>> = {}
+
+  for (const point of getBoosterScatterPoints(launches)) {
+    const bucket = pointsByVehicle[point.vehicle] ?? []
+    bucket.push(point)
+    pointsByVehicle[point.vehicle] = bucket
+  }
+
+  const vehicles = VEHICLES.filter(
+    (vehicle) => (pointsByVehicle[vehicle]?.length ?? 0) > 0,
+  )
+
+  return { vehicles, pointsByVehicle }
 }

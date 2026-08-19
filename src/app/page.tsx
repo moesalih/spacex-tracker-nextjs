@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import type { Launch, LaunchesData } from "@/lib/spacex"
+import { BoosterChart } from "./BoosterChart"
 import { LaunchChart } from "./LaunchChart"
 
 interface LaunchesResponse extends LaunchesData {
@@ -170,6 +171,9 @@ export default function Home() {
         <div className="flex flex-col md:flex-row  items-start md:grid md:grid-cols-12 gap-4  mb-10">
           <div className="col-span-9 min-w-0 w-full">
             <LaunchChart launches={launches} />
+            {family === "falcon" && isPast && !isSearchActive && (
+              <BoosterChart launches={launches} />
+            )}
 
             {isSearchActive && (
               <div className="text-sm opacity-60 mb-4">
