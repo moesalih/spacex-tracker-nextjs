@@ -175,7 +175,7 @@
     "payload": "DSCOVR",
     "payloadIcon": null,
     "orbit": "Sun–Earth L1 insertion",
-    "customer": ".mw-parser-output .plainlist ol,.mw-parser-output .plainlist ul{line-height:inherit;list-style:none;margin:0;padding:0}.mw-parser-output .plainlist ol li,.mw-parser-output .plainlist ul li{margin-bottom:0}\nUSAF\nNASA\nNOAA\n",
+    "customer": ".mw-parser-output .plainlist ol,.mw-parser-output .plainlist ul{line-height:inherit;list-style:none;margin:0;padding:0}.mw-parser-output .plainlist ol li,.mw-parser-output .plainlist ul li{margin-bottom:0} USAF NASA NOAA ",
     "outcome": "Success",
     "note": "First launch under USAF's OSP 3 launch contract. First SpaceX launch to put a satellite beyond a geostationary transfer orbit, first SpaceX launch into interplanetary space, and first SpaceX launch of an American research satellite. The first stage made a test flight descent to an over-ocean landing within 10 m (33 ft) of its intended target. The satellite launched into a 187 km x 1,241,000 km insertion orbit toward the Sun-Earth L1 point."
   },
@@ -184,10 +184,10 @@
     "date": "2015-03-02T03:50:00.000Z",
     "type": "F9 v1.1 B1014",
     "site": "Cape Canaveral, SLC‑40",
-    "payload": "\nABS-3A\nEutelsat 115 West B\n",
+    "payload": " ABS-3A Eutelsat 115 West B ",
     "payloadIcon": null,
     "orbit": "GTO",
-    "customer": "\nABS\nEutelsat\n",
+    "customer": " ABS Eutelsat ",
     "outcome": "Success",
     "note": "The launch was Boeing's first conjoined launch of a lighter-weight dual-commsat stack that was specifically designed to take advantage of the lower-cost SpaceX Falcon 9 launch vehicle. Per satellite, launch costs were less than US$30 million. The ABS satellite reached its final destination ahead of schedule and started operations on 10 September 2015."
   },
@@ -247,7 +247,7 @@
     "payload": "Jason-3",
     "payloadIcon": "📦",
     "orbit": "LEO",
-    "customer": "\nNASA (LSP)\nNOAA\nCNES\n",
+    "customer": " NASA (LSP) NOAA CNES ",
     "outcome": "Success",
     "note": "First launch of NASA and NOAA joint science mission under the NLS II launch contract (not related to NASA CRS or USAF OSP3 contracts) and last launch of the Falcon 9 v1.1 launch vehicle. The Jason-3 satellite was successfully deployed to target orbit.  SpaceX attempted for the first time to recover the first-stage booster on its new Pacific autonomous drone ship, but after a soft landing on the ship, the lockout on one of the landing legs failed to latch and the booster fell over and exploded."
   },
@@ -304,10 +304,10 @@
     "date": "2016-06-15T14:29:00.000Z",
     "type": "F9 FT B1024",
     "site": "Cape Canaveral, SLC‑40",
-    "payload": "\nABS-2A\nEutelsat 117 West B\n",
+    "payload": " ABS-2A Eutelsat 117 West B ",
     "payloadIcon": null,
     "orbit": "GTO",
-    "customer": "\nABS\nEutelsat\n",
+    "customer": " ABS Eutelsat ",
     "outcome": "Success",
     "note": "One year after pioneering this technique on Flight 16, Falcon again launched two Boeing 702SP gridded ion thruster satellites at 1,800 kg (4,000 lb) each, in a dual-stack configuration, with the two customers sharing the rocket and mission costs. First-stage landing attempt on drone ship failed due to low thrust on one of the three landing engines; a sub-optimal path led to the stage running out of propellant just above the deck of the landing ship, slamming to the drone ship, breaking a leg, and falling over."
   },
@@ -523,7 +523,7 @@
     "payload": "SES-11 / EchoStar 105",
     "payloadIcon": null,
     "orbit": "GTO",
-    "customer": "\nSES S.A.\nEchoStar\n",
+    "customer": " SES S.A. EchoStar ",
     "outcome": "Success",
     "note": "Third reuse and recovery of a previously flown first-stage booster, and the second time the contractor SES used a reflown booster. The large satellite is shared, in \"CondoSat\" arrangement between SES and EchoStar."
   },
@@ -602,12 +602,12 @@
   {
     "dateText": "22 February 2018  14:17",
     "date": "2018-02-22T14:17:00.000Z",
-    "type": "F9 FT B1038-2, Starlink (Tintin A & B)",
+    "type": "F9 FT B1038-2",
     "site": "Vandenberg, SLC‑4E",
     "payload": "Paz",
     "payloadIcon": "👨‍🚀",
     "orbit": "SSO",
-    "customer": "\nHisdesat\nexactEarth\n\n",
+    "customer": " Hisdesat exactEarth  ",
     "outcome": "Success",
     "note": "Last flight of a Block 3 first stage. Reused the booster from the Formosat-5 mission. Paz (peace) is Spain's first spy satellite that will be operated in a constellation with the German SAR fleet TSX and TDX. In addition, the rocket carried two SpaceX test satellites for their forthcoming communications network in low Earth orbit. This core flew without landing legs and was expended at sea. It also featured an upgraded payload fairing 2.0 with a first recovery attempt using the Mr. Steven crew boat equipped with a net. The fairing narrowly missed the boat, but achieved a soft water landing."
   },
@@ -616,10 +616,10 @@
     "date": "2018-03-06T05:33:00.000Z",
     "type": "F9 B4 B1044-1",
     "site": "Cape Canaveral, SLC‑40",
-    "payload": "\nHispasat 30W-6\nPODSat\n",
+    "payload": " Hispasat 30W-6 PODSat ",
     "payloadIcon": null,
     "orbit": "GTO",
-    "customer": "\nHispasat\nNovaWurks\n",
+    "customer": " Hispasat NovaWurks ",
     "outcome": "Success",
     "note": "The Spanish commsat was the largest satellite yet flown by SpaceX, \"nearly the size of a bus\". A drone ship landing was planned, but scrapped due to unfavorable weather conditions. After stage separation, the first stage booster successfully conducted an ocean landing in the Atlantic Ocean. SpaceX left the landing legs and titanium grid fins in place to prevent further delays, after previous concerns with the fairing pressurization and conflicts with the Atlas V launch of GOES-S. The Hispasat 30W-6 satellite was propelled into a supersynchronous transfer orbit."
   },
@@ -676,10 +676,10 @@
     "date": "2018-05-22T19:47:00.000Z",
     "type": "F9 B4 B1043-2",
     "site": "Vandenberg, SLC‑4E",
-    "payload": "\nIridium NEXT-6 (5 satellites)\nGRACE-FO × 2\n",
+    "payload": " Iridium NEXT-6 (5 satellites) GRACE-FO × 2 ",
     "payloadIcon": "🚌",
     "orbit": "Polar LEO",
-    "customer": "\nIridium Communications\nGFZ • NASA",
+    "customer": " Iridium Communications GFZ • NASA",
     "outcome": "Success",
     "note": "Sixth Iridium NEXT mission launching 5 satellites used the refurbished booster from Zuma. GFZ arranged a rideshare of GRACE-FO on a Falcon 9 with Iridium following the cancellation of their Dnepr launch contract in 2015. Iridium CEO Matt Desch disclosed in September 2017, that GRACE-FO would be launched on this mission. The booster reuse turnaround was a record 4.5 months between flights."
   },
@@ -832,12 +832,12 @@
     "date": "2019-02-22T01:45:00.000Z",
     "type": "F9 B5 B1048-3",
     "site": "Cape Canaveral, SLC‑40",
-    "payload": "\nNusantara Satu (PSN-6)\nBeresheet Moon lander\nS5\n",
+    "payload": " Nusantara Satu (PSN-6) Beresheet Moon lander S5 ",
     "payloadIcon": "🌘",
     "orbit": "GTO",
-    "customer": "\nPSN\nSpaceIL / IAI\nAir Force Research\n",
+    "customer": " PSN SpaceIL / IAI Air Force Research ",
     "outcome": "Success",
-    "note": "Nusantara Satu is a private Indonesian comsat planned to be located at 146.0° east, with a launch mass of 4,100 kg (9,000 lb), and featuring electric propulsion for orbit-raising and station-keeping. S5, a 60-kg smallsat by the Air Force Research Laboratory (AFRL), was piggybacked on Nusantara Satu, and was deployed near its GEO position to perform a classified space situational awareness mission. This launch opportunity was brokered by Spaceflight Industries as \"GTO-1\".\n\nThe Beresheet Moon lander (initially called Sparrow) was one of the candidates for the Google Lunar X-Prize, whose developers SpaceIL had secured a launch contract with Spaceflight Industries in October 2015. Its launch mass was 585 kg (1,290 lb) including fuel. After separating into a supersynchronous transfer orbit with an apogee of 69,400 km (43,100 mi), Beresheet raised its orbit by its own power over two months and flew to the Moon. After successfully getting into lunar orbit, Beresheet attempted to land on the Moon on 11 April 2019, but failed."
+    "note": "Nusantara Satu is a private Indonesian comsat planned to be located at 146.0° east, with a launch mass of 4,100 kg (9,000 lb), and featuring electric propulsion for orbit-raising and station-keeping. S5, a 60-kg smallsat by the Air Force Research Laboratory (AFRL), was piggybacked on Nusantara Satu, and was deployed near its GEO position to perform a classified space situational awareness mission. This launch opportunity was brokered by Spaceflight Industries as \"GTO-1\".  The Beresheet Moon lander (initially called Sparrow) was one of the candidates for the Google Lunar X-Prize, whose developers SpaceIL had secured a launch contract with Spaceflight Industries in October 2015. Its launch mass was 585 kg (1,290 lb) including fuel. After separating into a supersynchronous transfer orbit with an apogee of 69,400 km (43,100 mi), Beresheet raised its orbit by its own power over two months and flew to the Moon. After successfully getting into lunar orbit, Beresheet attempted to land on the Moon on 11 April 2019, but failed."
   },
   {
     "dateText": "2 March 2019  07:49",
@@ -909,7 +909,7 @@
     "orbit": "LEO / MEO",
     "customer": "USAF",
     "outcome": "Success",
-    "note": "USAF Space Test Program Flight 2 (STP-2) carried 24 small satellites, including: FormoSat-7 A/B/C/D/E/F integrated using EELV Secondary Payload Adapter, DSX, Prox-1 GPIM, DSAC, ISAT, SET, COSMIC-2, Oculus-ASR, OBT, NPSat, and several CubeSats including E-TBEx, LightSail 2, TEPCE, PSAT, and three ELaNa 15 CubeSats. Total payload mass was 3,700 kg (8,200 lb). The mission lasted six hours during which the second stage ignited four times and went into different orbits to deploy satellites including a \"propulsive passivation maneuver\".\n\nThird flight of Falcon Heavy. The side boosters from the Arabsat-6A mission just 2.5 months before were reused on this flight and successfully returned to LZ-1 and LZ-2. The center core, in use for the first time, underwent the most energetic reentry attempted by SpaceX, and attempted a landing over 1,200 km (750 mi) downrange, 30% further than any previous landing. This core suffered a thrust vector control failure in the center engine caused by a breach in the engine bay due to the extreme heat. The core thus failed its landing attempt on the drone ship Of Course I Still Love You due to lack of control when the outer engines shut down. For the first time, one fairing half was successfully landed on the catch-net of the support ship GO Ms. Tree (formerly Mr. Steven)."
+    "note": "USAF Space Test Program Flight 2 (STP-2) carried 24 small satellites, including: FormoSat-7 A/B/C/D/E/F integrated using EELV Secondary Payload Adapter, DSX, Prox-1 GPIM, DSAC, ISAT, SET, COSMIC-2, Oculus-ASR, OBT, NPSat, and several CubeSats including E-TBEx, LightSail 2, TEPCE, PSAT, and three ELaNa 15 CubeSats. Total payload mass was 3,700 kg (8,200 lb). The mission lasted six hours during which the second stage ignited four times and went into different orbits to deploy satellites including a \"propulsive passivation maneuver\".  Third flight of Falcon Heavy. The side boosters from the Arabsat-6A mission just 2.5 months before were reused on this flight and successfully returned to LZ-1 and LZ-2. The center core, in use for the first time, underwent the most energetic reentry attempted by SpaceX, and attempted a landing over 1,200 km (750 mi) downrange, 30% further than any previous landing. This core suffered a thrust vector control failure in the center engine caused by a breach in the engine bay due to the extreme heat. The core thus failed its landing attempt on the drone ship Of Course I Still Love You due to lack of control when the outer engines shut down. For the first time, one fairing half was successfully landed on the catch-net of the support ship GO Ms. Tree (formerly Mr. Steven)."
   },
   {
     "dateText": "25 July 2019  22:01",
@@ -921,7 +921,7 @@
     "orbit": "LEO (ISS)",
     "customer": "NASA (CRS)",
     "outcome": "Success",
-    "note": "This launch carried nearly 9,000 individual unique payloads including over one ton of science experiments, the most so far launched on a SpaceX Dragon. The third International Docking Adapter (IDA-3), a replacement for the first IDA lost during the CRS-7 launch anomaly, was one of the external payloads on this mission. Along with food and science, the Dragon also carried the ELaNa 27 RFTSat CubeSat and MakerSat-1 which will be used to demonstrate microgravity additive manufacturing. The satellite is expected to be launched by a Cygnus dispenser later in July 2019.\n\nThe booster used on this flight was the same used on CRS-17 earlier in the year; originally, it was planned to reuse it again for the CRS-19 mission later this year, but the plan was scrapped. For the first time, the twice flown Dragon spacecraft also made a third flight. Also used for the first time was a gray-band painted where the RP-1 kerosene tank is located, known as Falcon long coast mission-extension kit, to help with thermal conductivity and thus saving fuel during long coasts."
+    "note": "This launch carried nearly 9,000 individual unique payloads including over one ton of science experiments, the most so far launched on a SpaceX Dragon. The third International Docking Adapter (IDA-3), a replacement for the first IDA lost during the CRS-7 launch anomaly, was one of the external payloads on this mission. Along with food and science, the Dragon also carried the ELaNa 27 RFTSat CubeSat and MakerSat-1 which will be used to demonstrate microgravity additive manufacturing. The satellite is expected to be launched by a Cygnus dispenser later in July 2019.  The booster used on this flight was the same used on CRS-17 earlier in the year; originally, it was planned to reuse it again for the CRS-19 mission later this year, but the plan was scrapped. For the first time, the twice flown Dragon spacecraft also made a third flight. Also used for the first time was a gray-band painted where the RP-1 kerosene tank is located, known as Falcon long coast mission-extension kit, to help with thermal conductivity and thus saving fuel during long coasts."
   },
   {
     "dateText": "6 August 2019  23:23",
@@ -1082,7 +1082,7 @@
   {
     "dateText": "13 June 2020  09:21",
     "date": "2020-06-13T09:21:00.000Z",
-    "type": "F9 B5 B1059-3, SkySat-16, -17, -18",
+    "type": "F9 B5 B1059-3",
     "site": "Cape Canaveral, SLC‑40",
     "payload": "Starlink: Launch 8 (58 satellites)",
     "payloadIcon": "🛰",
@@ -1118,7 +1118,7 @@
   {
     "dateText": "7 August 2020  05:12",
     "date": "2020-08-07T05:12:00.000Z",
-    "type": "F9 B5 B1051-5, SXRS-1 (BlackSky Global 7 and 8)",
+    "type": "F9 B5 B1051-5",
     "site": "Kennedy, LC‑39A",
     "payload": "Starlink: Launch 9 (57 satellites)",
     "payloadIcon": "🛰",
@@ -1130,7 +1130,7 @@
   {
     "dateText": "18 August 2020  14:31",
     "date": "2020-08-18T14:31:00.000Z",
-    "type": "F9 B5 B1049-6, SkySat-19, -20, -21",
+    "type": "F9 B5 B1049-6",
     "site": "Cape Canaveral, SLC‑40",
     "payload": "Starlink: Launch 10 (58 satellites)",
     "payloadIcon": "🛰",
@@ -1454,7 +1454,7 @@
   {
     "dateText": "15 May 2021  22:56",
     "date": "2021-05-15T22:56:00.000Z",
-    "type": "F9 B5 B1058-8, Capella-6, Tyvak-0130",
+    "type": "F9 B5 B1058-8",
     "site": "Kennedy, LC‑39A",
     "payload": "Starlink: Launch 26 (52 satellites)",
     "payloadIcon": "🛰",
@@ -1598,7 +1598,7 @@
   {
     "dateText": "2 December 2021  23:12",
     "date": "2021-12-02T23:12:00.000Z",
-    "type": "F9 B5 B1060-9, SXRS-2 (BlackSky Global 12 and 13)",
+    "type": "F9 B5 B1060-9",
     "site": "Cape Canaveral, SLC‑40",
     "payload": "Starlink: Group 4-3 (48 satellites)",
     "payloadIcon": "🛰",
@@ -2217,7 +2217,7 @@
     "orbit": "GTO",
     "customer": "Eutelsat",
     "outcome": "Success",
-    "note": "Built by Airbus, the 4,500 kg (9,900 lb) satellite will maneuver to a 13° east orbit. The satellite reached a supersynchronous geostationary transfer orbit of 376 km × 55,950 km (234 mi × 34,766 mi) inclined at 27.1°.\n\nFirst stage B1069.3 included a hosted promotional payload by FIFA, that was a box powered by Starlink containing 2 Adidas Al Rihla (the Journey) balls, that were to be used in 2022 FIFA World Cup in Qatar for opening its Starlink office in Doha, Qatar. These match balls were launched and brought back by landing on the droneship, surviving the stresses of the booster. Later, they were taken out and shipped back to Qatar for the World Cup."
+    "note": "Built by Airbus, the 4,500 kg (9,900 lb) satellite will maneuver to a 13° east orbit. The satellite reached a supersynchronous geostationary transfer orbit of 376 km × 55,950 km (234 mi × 34,766 mi) inclined at 27.1°.  First stage B1069.3 included a hosted promotional payload by FIFA, that was a box powered by Starlink containing 2 Adidas Al Rihla (the Journey) balls, that were to be used in 2022 FIFA World Cup in Qatar for opening its Starlink office in Doha, Qatar. These match balls were launched and brought back by landing on the droneship, surviving the stresses of the booster. Later, they were taken out and shipped back to Qatar for the World Cup."
   },
   {
     "dateText": "20 October 2022  14:50",
@@ -2462,7 +2462,7 @@
   {
     "dateText": "31 January 2023  16:15",
     "date": "2023-01-31T16:15:00.000Z",
-    "type": "F9 B5 B1071‑7, ION SCV009",
+    "type": "F9 B5 B1071‑7",
     "site": "Vandenberg, SLC‑4E",
     "payload": "Starlink: Group 2-6 (49 satellites)",
     "payloadIcon": "🛰",
@@ -2584,7 +2584,7 @@
     "date": "2023-03-15T00:30:00.000Z",
     "type": "F9 B5 B1073‑7",
     "site": "Kennedy, LC‑39A",
-    "payload": "SpaceX CRS-27 (Dragon C209.3)\n ",
+    "payload": "SpaceX CRS-27 (Dragon C209.3)  ",
     "payloadIcon": "📦",
     "orbit": "LEO (ISS)",
     "customer": "NASA (CRS)",
@@ -2592,7 +2592,7 @@
     "note": "Three more CRS Phase 2 missions for Dragon 2 covering up to CRS-29 were announced in December 2020. This flight used a partial boostback burn to bring the first-stage booster to its drone ship closer to the coast. The maneuver was meant to cut down processing time by decreasing the time spent moving the ship back for refurbishment."
   },
   {
-    "dateText": "17 March 2023  19:26\n ",
+    "dateText": "17 March 2023  19:26  ",
     "date": "2023-03-17T19:26:00.000Z",
     "type": "F9 B5 B1071‑8",
     "site": "Vandenberg, SLC‑4E",
@@ -2714,7 +2714,7 @@
   {
     "dateText": "1 May 2023  00:26",
     "date": "2023-05-01T00:26:00.000Z",
-    "type": "Falcon Heavy B5 B1068 (core)",
+    "type": "Falcon Heavy B5 B1068 (core), B1052-8 (side), B1053-3 (side)",
     "site": "Kennedy, LC‑39A",
     "payload": "ViaSat-3 Americas ",
     "payloadIcon": null,
@@ -3439,7 +3439,7 @@
     "payload": "425 Project Flight 1 EIRSAT-1 and others 23 secondary payloads",
     "payloadIcon": null,
     "orbit": "SSO",
-    "customer": "Republic of Korea Armed Forces\nVarious",
+    "customer": "Republic of Korea Armed Forces Various",
     "outcome": "Success",
     "note": "A military satellite of South Korea with a mass of 800 kg. EIRSAT-1 is an Irish 2U cubesat that carries a gamma-ray detector and an experiment of thermal coatings for other spacecraft. SpaceX completing 250th landing of a Falcon first-stage booster this mission."
   },
@@ -3952,10 +3952,10 @@
     "date": "2024-04-07T23:16:00.000Z",
     "type": "F9 B5 B1073‑14",
     "site": "Kennedy, LC‑39A",
-    "payload": "Bandwagon-1 (11 payload smallsat rideshare)\n425 Project Flight 2",
+    "payload": "Bandwagon-1 (11 payload smallsat rideshare) 425 Project Flight 2",
     "payloadIcon": "🚌",
     "orbit": "LEO",
-    "customer": "Various\nRepublic of Korea Armed Forces",
+    "customer": "Various Republic of Korea Armed Forces",
     "outcome": "Success",
     "note": "Dedicated SmallSat Rideshare mission to 45° inclination, 550–600 km (340–370 mi) altitude. The mission includes flight 2 of 425 Project, a military SAR satellite of South Korea with a mass of ~800 kg (1,800 lb)."
   },
@@ -4557,7 +4557,7 @@
     "orbit": "LEO",
     "customer": "SpaceX",
     "outcome": "Success",
-    "note": "Launch of 21 Starlink v2 mini satellites, including 13 with direct-to-cell connectivity, to a 535 km (332 mi) orbit at an inclination of 53° to expand internet constellation. New record for the time between missions from different pads, launching 1 hour and 5 minutes after the prior flight."
+    "note": "Launch of 21 Starlink v2 mini satellites, including 13 with direct-to-cell connectivity, to a 535 km (332 mi) orbit at an inclination of 53° to expand internet constellation. SpaceX set a new record for the shortest time between two Falcon launches at 1 hour and 5 minutes. The previous record time was 1 hours and 51 minutes, set between the Transporter-10 and Starlink Group 6–41 missions on March 4, 2024."
   },
   {
     "dateText": "September 5, 2024  15:33",

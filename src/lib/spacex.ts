@@ -57,11 +57,11 @@ export async function getLaunches(): Promise<LaunchesData> {
 
   const data: LaunchesData = {
     pastLaunches: [
-      ...loadPastLaunches2024(),
       // ...getRows(y10to19, '#Launches', 'table.collapsible', parsePastRows),
       // ...getRows(y20to22, '#Launches', 'table.collapsible', parsePastRows),
       // ...getRows(y23, '#Launches', 'table.collapsible', parsePastRows),
       // ...getRows(y24, '#Launches', 'table.collapsible', parsePastRows),
+      ...loadPastLaunches2024(),
       ...getRows(currentFalcon, '#Past_launches', 'table.collapsible', parsePastRows),
     ],
     launches: [
@@ -117,7 +117,7 @@ function getRows(
 
 function parseFutureRows(rows: CheerioSelection, $: CheerioAPI): Launch[] {
   const columns = ['dateText', 'type', 'site', 'payload', 'orbit', 'customer']
-  return parseRows(rows, $, columns, 1)
+  return parseRows(rows, $, columns)
 }
 
 function parsePastRows(rows: CheerioSelection, $: CheerioAPI): Launch[] {
@@ -132,12 +132,12 @@ function parsePastRows(rows: CheerioSelection, $: CheerioAPI): Launch[] {
     'customer',
     'outcome',
   ]
-  return parseRows(rows, $, columns, 2)
+  return parseRows(rows, $, columns)
 }
 
 function parseFutureStarshipRows(rows: CheerioSelection, $: CheerioAPI): Launch[] {
   const columns = ['dateText', 'type', 'shipType', 'site', 'payload', 'orbit', 'customer']
-  return parseRows(rows, $, columns, 2)
+  return parseRows(rows, $, columns)
 }
 
 function parsePastStarshipRows(rows: CheerioSelection, $: CheerioAPI): Launch[] {
@@ -153,14 +153,13 @@ function parsePastStarshipRows(rows: CheerioSelection, $: CheerioAPI): Launch[] 
     'customer',
     'outcome',
   ]
-  return parseRows(rows, $, columns, 2)
+  return parseRows(rows, $, columns)
 }
 
 function parseRows(
   rows: CheerioSelection,
   $: CheerioAPI,
   columns: string[],
-  additionalTypeChildrenLength: number,
 ): Launch[] {
   const launches: Launch[] = []
   let launch: Launch = {}
@@ -196,9 +195,13 @@ function parseRows(
       if (outcomeIndex >= 0) {
         launch.outcome = removeReferences(children.eq(outcomeIndex).text())
       }
-    } else if (!children.first().attr('colspan') && children.length == additionalTypeChildrenLength) {
-      // parse additional vehicle types. usually for falcon heavy launches
-      launch.type = (launch.type ?? '') + ', ' + removeReferences(children.eq(0).text())
+    } else if (!children.first().attr('colspan')) {
+      // Extra booster rows (Falcon Heavy side cores). Same shape is also used
+      // for extra payloads, so only treat booster serials as additional types.
+      const extraType = removeReferences(children.eq(0).text())
+      if (/B\d{4}|\(side\)/.test(extraType)) {
+        launch.type = (launch.type ?? '') + ', ' + extraType
+      }
     } else if (children.first().attr('colspan')) {
       launch.note = removeReferences(children.eq(0).text())
       launch.payloadIcon = launch.payloadIcon || getPayloadIcon(launch.note)
