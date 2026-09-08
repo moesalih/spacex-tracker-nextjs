@@ -41,6 +41,10 @@ function formatYearTick(value: number | string) {
   return String(d.getUTCFullYear())
 }
 
+function formatBoosterTick(value: number | string) {
+  return `B${value}`
+}
+
 function BoosterTooltip({ active, payload }: TooltipContentProps) {
   if (!active || !payload?.length) return null
 
@@ -65,14 +69,22 @@ function getPoints(
   return Object.values(pointsByVehicle).flatMap((points) => points ?? [])
 }
 
-function getYDomain(points: BoosterScatterPoint[]): [number, number] {
-  const ys = points.map((point) => point.y)
-  if (ys.length === 0) return [0, 1]
+function getYAxis(points: BoosterScatterPoint[]): {
+  domain: [number, number]
+  ticks: number[]
+} {
+  const min = 1040
+  const ys = points.map((point) => point.y).filter((y) => y >= min)
+  if (ys.length === 0) return { domain: [min, min + 10], ticks: [min] }
 
   const max = Math.max(...ys)
-  const clustered = ys.filter((y) => y >= 1000)
-  const min = clustered.length > 0 ? Math.min(...clustered) : Math.min(...ys)
-  return [1039, max + 8]
+  const domainMax = Math.ceil(max / 10) * 10
+  const ticks: number[] = []
+  for (let y = min; y <= domainMax; y += 10) {
+    ticks.push(y)
+  }
+
+  return { domain: [min, domainMax], ticks }
 }
 
 function getYearAxis(points: BoosterScatterPoint[]): {
@@ -104,7 +116,7 @@ export function BoosterChart({ launches }: { launches: Launch[] }) {
   if (vehicles.length === 0) return null
 
   const points = getPoints(pointsByVehicle)
-  const yDomain = getYDomain(points)
+  const { domain: yDomain, ticks: boosterTicks } = getYAxis(points)
   const visiblePoints = points.filter(
     (point) => point.y >= yDomain[0] && point.y <= yDomain[1],
   )
@@ -123,7 +135,7 @@ export function BoosterChart({ launches }: { launches: Launch[] }) {
       <div className="aspect-video w-full min-w-0">
         <ResponsiveContainer width="100%" height="100%">
           <ScatterChart margin={{ top: 8, right: 8, left: 4, bottom: 0 }}>
-            <CartesianGrid stroke={gridLineColor} />
+            <CartesianGrid stroke={gridLineColor} syncWithTicks />
             <XAxis
               type="number"
               dataKey="x"
@@ -142,12 +154,15 @@ export function BoosterChart({ launches }: { launches: Launch[] }) {
               dataKey="y"
               name="Booster"
               domain={yDomain}
+              ticks={boosterTicks}
+              interval={0}
               allowDataOverflow
               allowDecimals={false}
               tick={tickStyle}
               tickLine={false}
               axisLine={{ stroke: gridLineColor }}
-              width={40}
+              tickFormatter={formatBoosterTick}
+              width={48}
             />
             <Tooltip
               cursor={{ strokeDasharray: "3 3" }}
