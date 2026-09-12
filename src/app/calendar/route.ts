@@ -19,7 +19,10 @@ export const spacexCalendar = async () => {
   if (!data) { throw null }
   // console.log(data)
 
-  data.launches = data.launches.filter(l => !!l.date)
+  const launches = [
+    ...data.launches,
+    ...(data.futureStarshipLaunches ?? []),
+  ].filter(l => !!l.date)
 
   const timezone = "UTC"
   const cal = ical({
@@ -28,7 +31,7 @@ export const spacexCalendar = async () => {
     timezone,
   })
 
-  for (const launch of data.launches) {
+  for (const launch of launches) {
     // console.log(launch)
     const event = cal.createEvent({
       start: moment.tz(launch.date, timezone),
