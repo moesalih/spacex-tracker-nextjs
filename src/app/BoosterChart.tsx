@@ -132,7 +132,7 @@ export function BoosterChart({ launches }: { launches: Launch[] }) {
       <div className="mb-2 text-sm font-medium opacity-60">
         Launches by booster
       </div>
-      <div className="aspect-video w-full min-w-0">
+      <div className="aspect-square w-full min-w-0 md:aspect-video">
         <ResponsiveContainer width="100%" height="100%">
           <ScatterChart margin={{ top: 8, right: 8, left: 4, bottom: 0 }}>
             <CartesianGrid stroke={gridLineColor} syncWithTicks />

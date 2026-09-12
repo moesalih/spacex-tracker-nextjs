@@ -54,7 +54,7 @@ export function LaunchChart({ launches }: { launches: Launch[] }) {
   if (data.length === 0 || vehicles.length === 0) return null
 
   return (
-    <div className="mb-10 aspect-video w-full min-w-0">
+    <div className="mb-10 aspect-square w-full min-w-0 md:aspect-video">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={data}

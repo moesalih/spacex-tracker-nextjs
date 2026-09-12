@@ -97,7 +97,7 @@ export default function Home() {
         SpaceX Launches 🚀
       </div>
       {data && (
-        <div className="flex flex-row flex-wrap items-center gap-2 mb-6">
+        <div className="flex flex-row flex-wrap items-center gap-2 mb-8">
           <ToggleGroup
             value={[family]}
             onValueChange={(value) => {
@@ -170,7 +170,7 @@ export default function Home() {
       {launches && (
         <div className="flex flex-col md:flex-row  items-start md:grid md:grid-cols-12 gap-4  mb-10">
           <div className="col-span-9 min-w-0 w-full">
-            <LaunchChart launches={launches} />
+            {isPast && <LaunchChart launches={launches} />}
             {family === "falcon" && isPast && !isSearchActive && (
               <BoosterChart launches={launches} />
             )}
