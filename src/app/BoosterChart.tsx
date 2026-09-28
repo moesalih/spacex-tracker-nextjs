@@ -142,8 +142,7 @@ export function BoosterChart({ launches }: { launches: Launch[] }) {
               name="Date"
               domain={xDomain}
               ticks={yearTicks}
-              interval="equidistantPreserveStart"
-              minTickGap={28}
+              interval={0}
               tick={tickStyle}
               tickLine={false}
               axisLine={{ stroke: gridLineColor }}
